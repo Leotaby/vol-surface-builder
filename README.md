@@ -14,7 +14,7 @@ End-to-end pipeline for constructing, calibrating, and visualizing implied volat
 
 ## Motivation
 
-The Black-Scholes model assumes constant volatility — a convenient fiction that breaks immediately when you look at real option prices. Implied volatility varies across strikes (skew) and maturities (term structure), forming a surface that encodes the market's view on tail risk, jump risk, and hedging costs.
+The Black-Scholes model assumes constant volatility, a convenient fiction that breaks immediately when you look at real option prices. Implied volatility varies across strikes (skew) and maturities (term structure), forming a surface that encodes the market's view on tail risk, jump risk, and hedging costs.
 
 This project builds that surface from scratch:
 
@@ -24,7 +24,7 @@ This project builds that surface from scratch:
 4. Interpolate onto a smooth surface via cubic splines
 5. Visualize in 2D (skew by maturity) and 3D (full surface)
 
-The goal is **not** just pretty charts — it's a working analytical tool that reveals how the market prices crash insurance, how skew steepens in stress, and where Black-Scholes breaks down.
+The goal is **not** just pretty charts , it's a working analytical tool that reveals how the market prices crash insurance, how skew steepens in stress, and where Black-Scholes breaks down.
 
 ---
 
@@ -36,11 +36,11 @@ The goal is **not** just pretty charts — it's a working analytical tool that r
 
 The 2D chart above shows implied volatility by strike for different maturities. A few things jump out:
 
-- **Negative skew is persistent**: lower strikes (OTM puts) trade at higher IV than upper strikes (OTM calls). This is the market pricing crash insurance — the premium for unhedgeable jump risk that Black-Scholes assumes away.
+- **Negative skew is persistent**: lower strikes (OTM puts) trade at higher IV than upper strikes (OTM calls). This is the market pricing crash insurance , the premium for unhedgeable jump risk that Black-Scholes assumes away.
 - **Short-dated skew is steeper**: the ~1 week curve has the most dramatic slope. Gamma exposure is concentrated, and dealers need wider spreads to compensate.
 - **Skew flattens with maturity**: the ~1 year curve is much smoother. Over longer horizons, the law of large numbers partially absorbs individual jump events.
 
-This isn't academic — skew dynamics directly affect delta-hedging P&L, structured product pricing, and tail risk measurement in any portfolio context.
+This isn't academic , skew dynamics directly affect delta-hedging P&L, structured product pricing, and tail risk measurement in any portfolio context.
 
 ---
 
@@ -116,7 +116,7 @@ Handles option chain retrieval from `yfinance` (equities) with fallback to synth
 
 ### `surface_builder.py`
 
-Takes cleaned (strike, maturity, IV) triples and constructs a smooth surface. Uses `scipy.interpolate.griddata` with cubic interpolation, falling back to nearest-neighbor at domain boundaries. Handles the messy reality of irregular option grids — strikes don't align across expiries, and some maturities have sparse coverage.
+Takes cleaned (strike, maturity, IV) triples and constructs a smooth surface. Uses `scipy.interpolate.griddata` with cubic interpolation, falling back to nearest-neighbor at domain boundaries. Handles the messy reality of irregular option grids , strikes don't align across expiries, and some maturities have sparse coverage.
 
 ### `svi_calibration.py`
 
@@ -124,7 +124,7 @@ Implements the Stochastic Volatility Inspired (SVI) parameterization from Gather
 
 ### `visualization.py`
 
-Charting module with two backends: `matplotlib` for high-resolution static PNGs (dark theme, publication-ready) and `plotly` for interactive HTML with rotation/zoom. Both produce consistent styling — dark background, viridis colormap, properly labeled axes.
+Charting module with two backends: `matplotlib` for high-resolution static PNGs (dark theme, publication-ready) and `plotly` for interactive HTML with rotation/zoom. Both produce consistent styling , dark background, viridis colormap, properly labeled axes.
 
 ---
 
@@ -147,9 +147,9 @@ Edit `src/config.py` or pass CLI arguments:
 
 ## Technical notes
 
-**Why Brent's method for IV?** Newton-Raphson is faster in theory but requires a good initial guess and can diverge for deep OTM options where vega is near zero. Brent's method is unconditionally convergent within a bracket — slower per iteration, but never fails. For a research tool where reliability matters more than microseconds, this is the right tradeoff.
+**Why Brent's method for IV?** Newton-Raphson is faster in theory but requires a good initial guess and can diverge for deep OTM options where vega is near zero. Brent's method is unconditionally convergent within a bracket , slower per iteration, but never fails. For a research tool where reliability matters more than microseconds, this is the right tradeoff.
 
-**Why SVI for synthetic data?** The SVI parameterization is arbitrage-free (under parameter constraints) and captures the three main features of real vol surfaces: level, skew, and curvature. It's used extensively on equity index desks. The alternative — pulling live data — introduces noise, market-hours dependency, and reproducibility issues. SVI gives clean, realistic surfaces that are identical every time you run the code.
+**Why SVI for synthetic data?** The SVI parameterization is arbitrage-free (under parameter constraints) and captures the three main features of real vol surfaces: level, skew, and curvature. It's used extensively on equity index desks. The alternative , pulling live data , introduces noise, market-hours dependency, and reproducibility issues. SVI gives clean, realistic surfaces that are identical every time you run the code.
 
 **Why not fit a full stochastic vol model?** Heston, SABR, and jump-diffusion models are more realistic but also more complex to calibrate. This project focuses on the **construction and visualization** of the vol surface, not on exotic model calibration. The `svi_calibration.py` module is intentionally kept simple so the pipeline is transparent. Extending to Heston or local vol is straightforward from this foundation.
 
@@ -161,7 +161,7 @@ Some natural next steps if you want to take this further:
 
 - **SVI arbitrage constraints**: enforce no-butterfly and no-calendar spread arbitrage in the fitted surface (Gatheral & Jacquier, 2014)
 - **Heston calibration**: fit the Heston stochastic vol model to the surface via characteristic function pricing + Levenberg-Marquardt
-- **Greeks surface**: compute and plot delta, gamma, vega surfaces — useful for book-level risk decomposition
+- **Greeks surface**: compute and plot delta, gamma, vega surfaces , useful for book-level risk decomposition
 - **Real-time streaming**: replace batch pulls with websocket feeds from IBKR or Polygon for live surface updates
 - **Skew analytics**: track 25-delta risk reversal and butterfly over time as regime indicators
 
@@ -178,4 +178,4 @@ Some natural next steps if you want to take this further:
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT , see [LICENSE](LICENSE).
