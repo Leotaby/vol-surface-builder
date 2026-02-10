@@ -169,9 +169,9 @@ Some natural next steps if you want to take this further:
 
 ## References
 
-- Black, F. & Scholes, M. (1973). *The Pricing of Options and Corporate Liabilities*. Journal of Political Economy.
+- Black, F. & Scholes, M. (1973). *The Pricing of Options and Corporate Liabilities*. Journal of Political Economy, 81(3), 637–654. https://doi.org/10.1086/260062 .
 - Gatheral, J. (2004). *A Parsimonious Arbitrage-Free Implied Volatility Parameterization*. Global Derivatives & Risk Management.
-- Merton, R. C. (1976). *Option pricing when underlying stock returns are discontinuous*. Journal of Financial Economics.
+- Merton, R. C. (1976). *Option pricing when underlying stock returns are discontinuous*. Journal of Financial Economics, 3(1–2), 125–144. https://doi.org/10.1016/0304-405X(76)90022-2 .
 - Dupire, B. (1994). *Pricing with a Smile*. Risk Magazine.
 
 ---
