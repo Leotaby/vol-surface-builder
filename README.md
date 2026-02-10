@@ -44,6 +44,66 @@ This isn't academic , skew dynamics directly affect delta-hedging P&L, structure
 
 ---
 
+## Mathematical formulation
+
+### 1. Black-Scholes-Merton pricing
+
+Let $S_0$ be spot, $K$ strike, $T$ time to maturity (years), $r$ risk-free rate, $q$ continuous dividend yield, and $\sigma$ volatility. Define:
+
+$$d_1 = \frac{\ln(S_0 / K) + (r - q + \tfrac{1}{2}\sigma^2)\,T}{\sigma\sqrt{T}}, \qquad d_2 = d_1 - \sigma\sqrt{T}$$
+
+European call and put prices:
+
+$$C_{BS} = S_0\,e^{-qT}\,N(d_1) - K\,e^{-rT}\,N(d_2)$$
+
+$$P_{BS} = K\,e^{-rT}\,N(-d_2) - S_0\,e^{-qT}\,N(-d_1)$$
+
+where $N(\cdot)$ is the standard normal CDF. These are implemented in [`src/black_scholes.py`](src/black_scholes.py).
+
+### 2. Implied volatility as an inversion problem
+
+Given a market option price $V_{mkt}$ (mid-price after bid-ask and liquidity filtering), implied volatility $\sigma_{imp}$ is defined as the root of:
+
+$$f(\sigma) = V_{BS}(S_0, K, T, r, q, \sigma) - V_{mkt} = 0$$
+
+There is no closed-form inverse for $\sigma$, so we solve numerically. This project uses **Brent's method** — a hybrid of bisection, secant, and inverse quadratic interpolation that is unconditionally convergent within a bracket $[\sigma_L, \sigma_U]$:
+
+$$\sigma^* = \arg\bigl\{f(\sigma) = 0\bigr\}, \quad \sigma \in [\sigma_L,\, \sigma_U]$$
+
+A Newton-Raphson solver (using vega $\partial V / \partial \sigma$ as the derivative) is also included for comparison but is not used in the main pipeline due to divergence risk on deep OTM options.
+
+### 3. SVI parameterization (Gatheral, 2004)
+
+For each expiry slice, define log-moneyness $k = \ln(K/F)$ where $F$ is the forward price. The **Stochastic Volatility Inspired (SVI)** model parameterizes total implied variance $w(k) = \sigma_{imp}^2(k) \cdot T$ as:
+
+$$w(k) = a + b\left(\rho\,(k - m) + \sqrt{(k-m)^2 + \sigma^2}\right)$$
+
+with parameters $a \in \mathbb{R}$, $b > 0$, $\rho \in (-1,1)$, $m \in \mathbb{R}$, $\sigma > 0$.
+
+Implied volatility is then recovered as:
+
+$$\sigma_{imp}(k) = \sqrt{\frac{w(k)}{T}}$$
+
+**Calibration** fits these five parameters per expiry slice by minimizing:
+
+$$\min_{\theta} \sum_{n=1}^{N} \bigl(w_\theta(k_n) - w_{mkt}(k_n)\bigr)^2 \quad \text{subject to } b > 0,\; \sigma > 0,\; |\rho| < 1$$
+
+where $w_{mkt}(k_n) = (\sigma_n^{mkt})^2 T$. Solved via L-BFGS-B in [`src/svi_calibration.py`](src/svi_calibration.py).
+
+### 4. From scattered quotes to the 3D surface
+
+After computing $\sigma_{imp}(K_i, T_j)$ on an irregular grid (strikes differ by expiry), the smooth 3D surface is constructed by interpolating the scattered observations:
+
+Given $N$ observed triples $\{(K_n, T_n, \sigma_n)\}_{n=1}^{N}$, define a dense regular evaluation grid $(K, T) \in \mathcal{G}$. The surface estimate is:
+
+$$\hat{\sigma}(K, T) = \mathcal{I}\bigl(\{(K_n, T_n, \sigma_n)\}\bigr)$$
+
+where $\mathcal{I}(\cdot)$ is a scattered-data interpolation operator — specifically, **cubic interpolation** inside the convex hull of the data and **nearest-neighbor fallback** at grid boundaries. In code, this corresponds to `scipy.interpolate.griddata` with `method="cubic"`.
+
+This $\hat{\sigma}(K, T)$ is exactly what is rendered as the 3D implied volatility surface.
+
+---
+
 ## Project structure
 
 ```
