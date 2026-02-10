@@ -68,7 +68,7 @@ $$f(\sigma) = V_{BS}(S_0, K, T, r, q, \sigma) - V_{mkt} = 0$$
 
 There is no closed-form inverse for $\sigma$, so we solve numerically. This project uses **Brent's method** — a hybrid of bisection, secant, and inverse quadratic interpolation that is unconditionally convergent within a bracket $[\sigma_L, \sigma_U]$:
 
-$$\sigma^* = \underset{\sigma}{\operatorname{arg}} \lbrace f(\sigma) = 0 \rbrace, \quad \sigma \in [\sigma_L, \sigma_U]$$
+$$\sigma^* : f(\sigma) = 0, \quad \sigma \in [\sigma_L, \sigma_U]$$
 
 A Newton-Raphson solver (using vega $\partial V / \partial \sigma$ as the derivative) is also included for comparison but is not used in the main pipeline due to divergence risk on deep OTM options.
 
@@ -86,7 +86,7 @@ $$\sigma_{imp}(k) = \sqrt{\frac{w(k)}{T}}$$
 
 **Calibration** fits these five parameters per expiry slice by minimizing:
 
-$$\min_{\theta} \sum_{n=1}^{N} (w_{\theta}(k_n) - w_{mkt}(k_n))^2 \quad \textrm{subject to } b > 0, \; \sigma > 0, \; |\rho| < 1$$
+$$\min_{\theta} \sum_{n=1}^{N} (w_{\theta}(k_n) - w_{mkt}(k_n))^2 \quad s.t. \; b > 0, \; \sigma > 0, \; |\rho| < 1$$
 
 where $w_{mkt}(k_n) = (\sigma_n^{mkt})^2 T$. Solved via L-BFGS-B in [`src/svi_calibration.py`](src/svi_calibration.py).
 
@@ -96,7 +96,7 @@ After computing $\sigma_{imp}(K_i, T_j)$ on an irregular grid (strikes differ by
 
 Given $N$ observed triples $\{(K_n, T_n, \sigma_n)\}_{n=1}^{N}$, define a dense regular evaluation grid $(K, T) \in \mathcal{G}$. The surface estimate is:
 
-$$\hat{\sigma}(K, T) = \mathcal{I}\left(\lbrace(K_n, T_n, \sigma_n)\rbrace\right)$$
+$$\hat{\sigma}(K, T) = \mathcal{I}(\{(K_n, T_n, \sigma_n)\})$$
 
 where $\mathcal{I}(\cdot)$ is a scattered-data interpolation operator — specifically, **cubic interpolation** inside the convex hull of the data and **nearest-neighbor fallback** at grid boundaries. In code, this corresponds to `scipy.interpolate.griddata` with `method="cubic"`.
 
