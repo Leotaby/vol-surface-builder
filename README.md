@@ -14,7 +14,7 @@ End-to-end pipeline for constructing, calibrating, and visualizing implied volat
 
 ## Motivation
 
-The Black-Scholes model assumes constant volatility — a convenient fiction that breaks immediately when you look at real option prices. Implied volatility varies across strikes (skew) and maturities (term structure), forming a surface that encodes the market's view on tail risk, jump risk, and hedging costs.
+The Black-Scholes model assumes constant volatility a convenient fiction that breaks immediately when you look at real option prices. Implied volatility varies across strikes (skew) and maturities (term structure), forming a surface that encodes the market's view on tail risk, jump risk, and hedging costs.
 
 This project builds that surface from scratch:
 
@@ -176,7 +176,7 @@ Handles option chain retrieval from `yfinance` (equities) with fallback to synth
 
 ### `surface_builder.py`
 
-Takes cleaned (strike, maturity, IV) triples and constructs a smooth surface. Uses `scipy.interpolate.griddata` with cubic interpolation, falling back to nearest-neighbor at domain boundaries. Handles the messy reality of irregular option grids — strikes don't align across expiries, and some maturities have sparse coverage.
+Takes cleaned (strike, maturity, IV) triples and constructs a smooth surface. Uses `scipy.interpolate.griddata` with cubic interpolation, falling back to nearest-neighbor at domain boundaries. Handles the messy reality of irregular option grids strikes don't align across expiries, and some maturities have sparse coverage.
 
 ### `svi_calibration.py`
 
@@ -207,9 +207,9 @@ Edit `src/config.py` or pass CLI arguments:
 
 ## Technical notes
 
-**Why Brent's method for IV?** Newton-Raphson is faster in theory but requires a good initial guess and can diverge for deep OTM options where vega is near zero. Brent's method is unconditionally convergent within a bracket — slower per iteration, but never fails. For a research tool where reliability matters more than microseconds, this is the right tradeoff.
+**Why Brent's method for IV?** Newton-Raphson is faster in theory but requires a good initial guess and can diverge for deep OTM options where vega is near zero. Brent's method is unconditionally convergent within a bracket slower per iteration, but never fails. For a research tool where reliability matters more than microseconds, this is the right tradeoff.
 
-**Why SVI for synthetic data?** The SVI parameterization is arbitrage-free (under parameter constraints) and captures the three main features of real vol surfaces: level, skew, and curvature. It's used extensively on equity index desks. The alternative — pulling live data — introduces noise, market-hours dependency, and reproducibility issues. SVI gives clean, realistic surfaces that are identical every time you run the code.
+**Why SVI for synthetic data?** The SVI parameterization is arbitrage-free (under parameter constraints) and captures the three main features of real vol surfaces: level, skew, and curvature. It's used extensively on equity index desks. The alternative pulling live data introduces noise, market-hours dependency, and reproducibility issues. SVI gives clean, realistic surfaces that are identical every time you run the code.
 
 **Why not fit a full stochastic vol model?** Heston, SABR, and jump-diffusion models are more realistic but also more complex to calibrate. This project focuses on the **construction and visualization** of the vol surface, not on exotic model calibration. The `svi_calibration.py` module is intentionally kept simple so the pipeline is transparent. Extending to Heston or local vol is straightforward from this foundation.
 
@@ -221,7 +221,7 @@ Some natural next steps if you want to take this further:
 
 - **SVI arbitrage constraints**: enforce no-butterfly and no-calendar spread arbitrage in the fitted surface (Gatheral & Jacquier, 2014)
 - **Heston calibration**: fit the Heston stochastic vol model to the surface via characteristic function pricing + Levenberg-Marquardt
-- **Greeks surface**: compute and plot delta, gamma, vega surfaces — useful for book-level risk decomposition
+- **Greeks surface**: compute and plot delta, gamma, vega surfaces useful for book-level risk decomposition
 - **Real-time streaming**: replace batch pulls with websocket feeds from IBKR or Polygon for live surface updates
 - **Skew analytics**: track 25-delta risk reversal and butterfly over time as regime indicators
 
@@ -238,4 +238,4 @@ Some natural next steps if you want to take this further:
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT - see [LICENSE](LICENSE).
