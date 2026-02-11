@@ -21,7 +21,7 @@ This project builds that surface from scratch:
 1. Pull live option chains (or use synthetic calibration data)
 2. Compute implied volatility by numerically inverting Black-Scholes
 3. Clean and filter the raw IV grid (bid-ask noise, stale quotes, illiquid strikes)
-4. Interpolate onto a smooth surface via cubic splines
+4. Interpolate onto a smooth surface via cubic scattered data interpolation
 5. Visualize in 2D (skew by maturity) and 3D (full surface)
 
 The goal is **not** just pretty charts it's a working analytical tool that reveals how the market prices crash insurance, how skew steepens in stress, and where Black-Scholes breaks down.
@@ -88,7 +88,7 @@ $$\sigma_{imp}(k) = \sqrt{\frac{w(k)}{T}}$$
 
 **Calibration** fits these five parameters per expiry slice by minimizing:
 
-$$\min_{\theta} \sum_{n=1}^{N} (w_{\theta}(k_n) - w_{mkt}(k_n))^2 \quad s.t. \; b > 0, \; \sigma > 0, \; |\rho| < 1$$
+$$\min_{\theta} \sum_{n=1}^{N} (w_{\theta}(k_n) - w_{mkt}(k_n))^2 \quad \text{s.t.}\quad b>0,\ \sigma>0,\ |\rho|<1$$
 
 where $w_{mkt}(k_n) = (\sigma_n^{mkt})^2 T$. Solved via L-BFGS-B in [`src/svi_calibration.py`](src/svi_calibration.py).
 
