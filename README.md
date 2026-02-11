@@ -24,7 +24,7 @@ This project builds that surface from scratch:
 4. Interpolate onto a smooth surface via cubic splines
 5. Visualize in 2D (skew by maturity) and 3D (full surface)
 
-The goal is **not** just pretty charts — it's a working analytical tool that reveals how the market prices crash insurance, how skew steepens in stress, and where Black-Scholes breaks down.
+The goal is **not** just pretty charts it's a working analytical tool that reveals how the market prices crash insurance, how skew steepens in stress, and where Black-Scholes breaks down.
 
 ---
 
@@ -68,7 +68,7 @@ Given a market option price $V_{mkt}$ (mid-price after bid-ask and liquidity fil
 
 $$f(\sigma) = V_{BS}(S_0, K, T, r, q, \sigma) - V_{mkt} = 0$$
 
-There is no closed-form inverse for $\sigma$, so we solve numerically. This project uses **Brent's method** — a hybrid of bisection, secant, and inverse quadratic interpolation that is unconditionally convergent within a bracket $[\sigma_L, \sigma_U]$:
+There is no closed-form inverse for $\sigma$, so we solve numerically. This project uses **Brent's method**  a hybrid of bisection, secant, and inverse quadratic interpolation that is unconditionally convergent within a bracket $[\sigma_L, \sigma_U]$:
 
 $$\sigma^* : f(\sigma) = 0, \quad \sigma \in [\sigma_L, \sigma_U]$$
 
@@ -186,7 +186,7 @@ Implements the Stochastic Volatility Inspired (SVI) parameterization from Gather
 
 ### `visualization.py`
 
-Charting module with two backends: `matplotlib` for high-resolution static PNGs (dark theme, publication-ready) and `plotly` for interactive HTML with rotation/zoom. Both produce consistent styling — dark background, viridis colormap, properly labeled axes.
+Charting module with two backends: `matplotlib` for high-resolution static PNGs (dark theme, publication-ready) and `plotly` for interactive HTML with rotation/zoom. Both produce consistent styling dark background, viridis colormap, properly labeled axes.
 
 ---
 
