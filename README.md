@@ -231,10 +231,15 @@ Some natural next steps if you want to take this further:
 
 ## References
 
-- Black, F. & Scholes, M. (1973). *The Pricing of Options and Corporate Liabilities*. Journal of Political Economy.
-- Gatheral, J. (2004). *A Parsimonious Arbitrage-Free Implied Volatility Parameterization*. Global Derivatives & Risk Management.
-- Merton, R. C. (1976). *Option pricing when underlying stock returns are discontinuous*. Journal of Financial Economics.
-- Dupire, B. (1994). *Pricing with a Smile*. Risk Magazine.
+- Black, F., & Scholes, M. (1973). The Pricing of Options and Corporate Liabilities. *Journal of Political Economy, 81*(3), 637-654. https://doi.org/10.1086/260062
+
+- Merton, R. C. (1976). Option pricing when underlying stock returns are discontinuous. *Journal of Financial Economics, 3*(1–2), 125-144. https://doi.org/10.1016/0304-405X(76)90022-2
+
+- Gatheral, J. (2004). A parsimonious arbitrage-free implied volatility parameterization with application to the valuation of volatility derivatives. *Global Derivatives & Risk Management (GDRM), Madrid* (presentation / technical note).
+
+- Gatheral, J., & Jacquier, A. (2014). Arbitrage-free SVI volatility surfaces. *Quantitative Finance, 14*(1), 59-71. https://doi.org/10.1080/14697688.2013.819986
+
+- Dupire, B. (1994). Pricing with a Smile. *Risk Magazine*, January 1994, 18-20.
 
 ---
 
