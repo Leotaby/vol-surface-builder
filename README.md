@@ -48,15 +48,17 @@ This isn't academic skew dynamics directly affect delta-hedging P&L, structured 
 
 ### 1. Black-Scholes-Merton pricing
 
-Let $S_0$ be spot, $K$ strike, $T$ time to maturity (years), $r$ risk-free rate, $q$ continuous dividend yield, and $\sigma$ volatility. Define:
+Assume the underlying follows geometric Brownian motion. Let $S_0$ be spot, $K$ strike, $T$ time to maturity (years), $r$ risk-free rate, $q$ continuous dividend yield, and $\sigma$ volatility. Define:
 
-$$d_1 = \frac{\ln(S_0 / K) + (r - q + \tfrac{1}{2}\sigma^2)\,T}{\sigma\sqrt{T}}, \qquad d_2 = d_1 - \sigma\sqrt{T}$$
+$$d_1 = \frac{\ln(S_0/K) + (r - q + \tfrac{1}{2}\sigma^2)T}{\sigma\sqrt{T}}, \qquad d_2 = d_1 - \sigma\sqrt{T}$$
 
-European call and put prices:
+The value of a European call is:
 
-$$C_{BS} = S_0\,e^{-qT}\,N(d_1) - K\,e^{-rT}\,N(d_2)$$
+$$C(S_0, K, T) = S_0 e^{-qT} N(d_1) - K e^{-rT} N(d_2)$$
 
-$$P_{BS} = K\,e^{-rT}\,N(-d_2) - S_0\,e^{-qT}\,N(-d_1)$$
+The corresponding European put is:
+
+$$P(S_0, K, T) = K e^{-rT} N(-d_2) - S_0 e^{-qT} N(-d_1)$$
 
 where $N(\cdot)$ is the standard normal CDF. These are implemented in [`src/black_scholes.py`](src/black_scholes.py).
 
