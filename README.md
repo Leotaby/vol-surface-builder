@@ -36,11 +36,11 @@ The goal is **not** just pretty charts — it's a working analytical tool that r
 
 The 2D chart above shows implied volatility by strike for different maturities. A few things jump out:
 
-- **Negative skew is persistent**: lower strikes (OTM puts) trade at higher IV than upper strikes (OTM calls). This is the market pricing crash insurance — the premium for unhedgeable jump risk that Black-Scholes assumes away.
+- **Negative skew is persistent**: lower strikes (OTM puts) trade at higher IV than upper strikes (OTM calls). This is the market pricing crash insurance the premium for unhedgeable jump risk that Black-Scholes assumes away.
 - **Short-dated skew is steeper**: the ~1 week curve has the most dramatic slope. Gamma exposure is concentrated, and dealers need wider spreads to compensate.
 - **Skew flattens with maturity**: the ~1 year curve is much smoother. Over longer horizons, the law of large numbers partially absorbs individual jump events.
 
-This isn't academic — skew dynamics directly affect delta-hedging P&L, structured product pricing, and tail risk measurement in any portfolio context.
+This isn't academic skew dynamics directly affect delta-hedging P&L, structured product pricing, and tail risk measurement in any portfolio context.
 
 ---
 
@@ -98,7 +98,7 @@ Given $N$ observed triples $\{(K_n, T_n, \sigma_n)\}_{n=1}^{N}$, define a dense 
 
 $$\hat{\sigma}(K, T) = \mathcal{I}(\{(K_n, T_n, \sigma_n)\})$$
 
-where $\mathcal{I}(\cdot)$ is a scattered-data interpolation operator — specifically, **cubic interpolation** inside the convex hull of the data and **nearest-neighbor fallback** at grid boundaries. In code, this corresponds to `scipy.interpolate.griddata` with `method="cubic"`.
+where $\mathcal{I}(\cdot)$ is a scattered-data interpolation operator specifically, **cubic interpolation** inside the convex hull of the data and **nearest-neighbor fallback** at grid boundaries. In code, this corresponds to `scipy.interpolate.griddata` with `method="cubic"`.
 
 This $\hat{\sigma}(K, T)$ is exactly what is rendered as the 3D implied volatility surface.
 
